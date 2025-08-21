@@ -9,4 +9,4 @@ Welcome! This repository is my living portfolio where I document my progress in 
 | #  | Project Name                  | Key Skills Practiced                               | Link                                                       |
 |----|-------------------------------|----------------------------------------------------|------------------------------------------------------------|
 | 01 | AquaGuard Plant Notifier      | Bash Scripting, Cron Automation, File I/O, `date`  | [View Project](./projects/01-AquaGuard-Plant-Notifier/)    |
-|    | *...your next project here...*| *...skills you learn...*                           | *...link to it...*                                         |
+|    |   *future projects to come*   | *...skills I've  learned...*                       | *...link to project...*                                    |
