@@ -30,31 +30,35 @@ done
 
 shift $((OPTIND-1))  # Remove flag options and treat remaining arguments
 
+# Check that a filename was provided
+if [ -z "$1" ]; then
+    echo "Error: No log file provided." >&2
+    echo "Usage: $0 [-c column] [-h lines | -t lines] <filename>" >&2
+    exit 1
+fi
+
 # Set filename
 FILENAME="$1"
 
 # Check if file exists
-if [ -r $FILENAME ]; then  # Test operator to see if file exists and is readable
-	echo "File exists"
-else
-	echo "File does not exist"
+if [ ! -r "$FILENAME" ]; then  # Test operator to see if file exists and is readable
+	echo "Error: File '$FILENAME' does not exist or is not readable" >&2
 	exit 1  # Exit script if file is bad
 fi
 
 # Check that both -t and -h flags are not used concurrently
 if [ -n "$N_TOP_LINES" ] && [ -n "$N_BOTTOM_LINES" ]; then
-	echo "Cannot accept both -h and -t flags"
+	echo "Error: Cannot use both -h(head) and -t(tail) flags." >&2
 	exit 1
 fi
 
 # Print the specified lines from the file
-SORTED=$(awk '{print $COLUMN}' $FILENAME | sort | uniq -c | sort -nr )
+SORTED=$(awk -v col="$COLUMN" '{print $col}' "$FILENAME" | sort | uniq -c | sort -nr)
 
 if [ -n "$N_TOP_LINES" ]; then
-	echo SORTED | head -$N_TOP_LINES
-else [ -n "$N_BOTTOM_LINES" ]; then
-	echo SORTED | tail -$N_BOTTOM_LINES
-else; then
-	echo SORTED
+	echo "$SORTED" | head -n "$N_TOP_LINES"
+elif [ -n "$N_BOTTOM_LINES" ]; then
+	echo "$SORTED" | tail -n "$N_BOTTOM_LINES"
+else
+	echo "$SORTED"
 fi
- 
